@@ -1,0 +1,106 @@
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="/js/my.js"></script>
+    </head>
+<style>
+body {position: relative;color: white;}
+
+#gif-wrap {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	background-color: #000;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	z-index: -1;
+}
+
+
+#new-gif {
+	padding: .75rem 2.5rem;
+	font-weight: 600;
+	background: #424242;
+	z-index: 10;
+	color: #fff;
+	border-radius: 30px;
+	border: 0;
+	font-size: 14px;
+	position: absolute;
+    top: 1%;
+    left: 45%;
+	transition: background .15s ease;
+	cursor: pointer;
+	&:hover {
+		background: #626262;
+	}
+}
+</style>
+<div id="gif-wrap"></div>
+<!-- <div id="gif-logo"><img src="https://storage.googleapis.com/chydlx/codepen/random-gif-generator/giphy-logo.gif"/></div> -->
+<button id="new-gif">Est-ce que Tinael est trigger?</button> Made By Nathan Pire For SpaceY with love
+<script>
+    $(document).ready(function() {
+	// Initiate gifLoop for set interval
+	var refresh;
+	// Duration count in seconds
+	const duration = 1000 * 10;
+	// Giphy API defaults
+	const giphy = {
+		baseURL: "https://api.giphy.com/v1/gifs/",
+		apiKey: "0UTRbFtkMxAplrohufYco5IY74U8hOes",
+		tag: "triggered",
+		type: "search",
+		rating: "R"
+	};
+	// Target gif-wrap container
+	const $gif_wrap = $("#gif-wrap");
+	// Giphy API URL
+	let giphyURL = encodeURI(
+		giphy.baseURL +
+			giphy.type +
+			"?api_key=" +
+			giphy.apiKey +
+			"&q=" +
+			giphy.tag +
+			"&rating=" +
+			giphy.rating
+	);
+    	// Call Giphy API and render data
+	var newGif = () => $.getJSON(giphyURL, json => renderGif(json.data));
+	// Display Gif in gif wrap container
+	var renderGif = _giphy => {
+        let num =Math.ceil(Math.random() * 25);
+        let giph = _giphy[num];
+		// Set gif as bg image
+		$gif_wrap.css({
+			"background-image": 'url("' + giph.images.original.url + '")'
+		});
+
+		// Start duration countdown
+		// refreshRate();
+	};
+
+	// Call for new gif after duration
+	// var refreshRate = () => {
+	// 	// Reset set intervals
+	// 	clearInterval(refresh);
+	// 	refresh = setInterval(function() {
+	// 		// Call Giphy API for new gif
+	// 		newGif();
+	// 	}, duration);
+	// };
+
+	// Call Giphy API for new gif
+	newGif();
+	
+	
+	const newGifButton = $('#new-gif');
+	
+	newGifButton.click(newGif)
+});
+
+</script>
